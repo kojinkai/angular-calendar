@@ -1,0 +1,29 @@
+.calendar {
+  table-layout: fixed;
+  width: 100%;
+
+  &__day-time-indicator {
+    height: 60px;
+  }
+
+  &__gutter {
+    width: 50px;
+  }
+
+  &__bg-rows {
+    position: relative;
+  }
+
+  &__bg-rows-inner {
+    position: absolute;
+    width: 100%;
+  }
+
+  &__bg-row-div {
+    border-bottom: 1px dotted $border-grey;
+    border-top: 1px solid $border-grey;
+    font-size: 1px;
+    height: 21px;
+    margin-bottom: 20px;
+  }
+}

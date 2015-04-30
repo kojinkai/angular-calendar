@@ -1,0 +1,56 @@
+<div class="row">
+  <div class="calendar">
+    <ul>
+      <li ng-repeat="item in scheduledItems">{{item.start}} - {{item.end}} and lasts {{item.duration}} minutes</li>
+    </ul>
+    <table class="calendar">
+      <tbody>
+        <tr height="1">
+          <td class="calendar__gutter"></td>
+          <td colspan="5">
+            <div class="calendar__bg-rows">
+              <div class="calendar__bg-rows-inner">
+                <div class="calendar__bg-row ext-row-1" style="height:60px;">
+                  <div class="calendar__bg-row-div " style="height:30px;"></div>
+                </div>
+                <div class="calendar__bg-row ext-row-2" style="height:60px;">
+                  <div class="calendar__bg-row-div " style="height:30px;"></div>
+                </div>
+                <div class="calendar__bg-row ext-row-3" style="height:60px;">
+                  <div class="calendar__bg-row-div " style="height:30px;"></div>
+                </div>
+                <div class="calendar__bg-row ext-row-4" style="height:60px;">
+                  <div class="calendar__bg-row-div " style="height:30px;"></div>
+                </div>
+                <div class="calendar__bg-row ext-row-5" style="height:60px;">
+                  <div class="calendar__bg-row-div " style="height:30px;"></div>
+                </div>
+                <div class="calendar__bg-row ext-row-6" style="height:60px;">
+                  <div class="calendar__bg-row-div " style="height:30px;"></div>
+                </div>
+                <div class="calendar__bg-row ext-row-7" style="height:60px;">
+                  <div class="calendar__bg-row-div " style="height:30px;"></div>
+                </div>
+                <div class="calendar__bg-row ext-row-8" style="height:60px;">
+                  <div class="calendar__bg-row-div " style="height:30px;"></div>
+                </div>
+                <div class="calendar__bg-row ext-row-9" style="height:60px;">
+                  <div class="calendar__bg-row-div " style="height:30px;"></div>
+                </div>
+              </div>
+            </div>
+          </td>
+        </tr>
+        <tr>
+          <td class="calendar__day-times">
+            <div class="calendar__day-time-indicator" ng-repeat="timeslot in workingHours">
+              <span class="calendar__day-time-inner">
+                {{timeslot.time | meridiem}}
+              </span>
+            </div>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>
