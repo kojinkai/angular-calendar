@@ -8,31 +8,32 @@
  * Controller of the schedulerApp
  */
 angular.module('schedulerApp')
-  .controller('MainCtrl', function($scope, eventAllocator, ScheduleCreator, dayConfig) {
+  .controller('MainCtrl', function($scope, eventManager, ScheduleCreator, dayConfig) {
+
     var Schedule = ScheduleCreator;
 
-    var createSlots = function(config) {
-      var slots = [],
-        i = 0;
-      for (i; i < config.dayLength; i++) {
-        slots.push({time: config.dayStart + i});
-      }
-      return slots;
-    };
-
     $scope.scheduledItems = [];
-
-    $scope.workingHours = createSlots(dayConfig);
-
-    $scope.eventAllocator = eventAllocator;
+    $scope.workingHours = eventManager.createSlots(dayConfig.defs);
+    $scope.eventManager = eventManager;
 
     window.renderDay = function(schedule) {
       schedule.forEach(function(event) {
 
-        var schedule = new Schedule(event).getDuration();
+        // add the event to the registry
+        $scope.eventManager.addEvent(event);
+
+        // create new booking object and add it to the schedule
+        var schedule = new Schedule(event)
+          .getDuration();
         $scope.scheduledItems.push(schedule);
+
       });
 
+      // plot the layouts
+      $scope.eventManager.reCalcLayout($scope.scheduledItems);
+      console.log('scheduledItems is now: ', $scope.scheduledItems);
+
+      // re-digest the UI
       $scope.$digest();
     };
 

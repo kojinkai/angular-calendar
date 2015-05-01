@@ -16,6 +16,8 @@ angular.module('schedulerApp')
       this.start = config.start;
       this.end = config.end;
       this.name = config.name || 'New Event';
+      this.offsetTop = config.start;
+      this.horizontalSpan = null;
     };
 
     scheduledEvent.prototype.getDuration = function() {
@@ -23,6 +25,10 @@ angular.module('schedulerApp')
       return this;
     };
 
-    // Public API here
+    scheduledEvent.prototype.getLayout = function(overlaps) {
+      this.horizontalSpan = overlaps;
+      return this;
+    };
+
     return scheduledEvent;
   });
