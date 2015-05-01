@@ -6,6 +6,35 @@
     height: 60px;
   }
 
+  &__day-column {
+    vertical-align: top;
+  }
+
+  &__day-column-inner {
+    position: relative;
+  }
+
+  &__day-inner-panel {
+    position: relative;
+    height: 500px;
+  }
+
+  &__day-event {
+    background: $color-event-orange;
+    padding: 2rem;
+    position: absolute;
+    width: 100%;
+    border-radius: 10px;
+  }
+
+  &__hour-label {
+    width: 50px;
+  }
+
+  &__event-label {
+    width: 680px;
+  }
+
   &__gutter {
     width: 50px;
   }
@@ -20,8 +49,8 @@
   }
 
   &__bg-row-div {
-    border-bottom: 1px dotted $border-grey;
-    border-top: 1px solid $border-grey;
+    border-bottom: 1px dotted $color-border-grey;
+    border-top: 1px solid $color-border-grey;
     font-size: 1px;
     height: 21px;
     margin-bottom: 20px;

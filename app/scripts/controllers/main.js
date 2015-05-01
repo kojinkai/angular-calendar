@@ -19,19 +19,17 @@ angular.module('schedulerApp')
     window.renderDay = function(schedule) {
       schedule.forEach(function(event) {
 
-        // add the event to the registry
-        $scope.eventManager.addEvent(event);
-
         // create new booking object and add it to the schedule
-        var schedule = new Schedule(event)
-          .getDuration();
+        var schedule = new Schedule(event).getDuration();
+
+        // add the event to the registry
+        $scope.eventManager.addEvent(schedule);
         $scope.scheduledItems.push(schedule);
 
       });
 
       // plot the layouts
-      $scope.eventManager.reCalcLayout($scope.scheduledItems);
-      console.log('scheduledItems is now: ', $scope.scheduledItems);
+      $scope.scheduledItems = $scope.eventManager.reCalcLayout($scope.scheduledItems);
 
       // re-digest the UI
       $scope.$digest();

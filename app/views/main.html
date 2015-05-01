@@ -1,9 +1,16 @@
 <div class="row">
   <div class="calendar">
-    <ul>
-      <li ng-repeat="item in scheduledItems">{{item.start}} - {{item.end}} and lasts {{item.duration}} minutes</li>
-    </ul>
     <table class="calendar">
+      <thead>
+        <tr>
+          <td class="calendar__hour-label">
+            Hour
+          </td>
+          <td class="calendar__event-label">
+            Events
+          </td>
+        </tr>
+      </thead>
       <tbody>
         <tr height="1">
           <td class="calendar__gutter"></td>
@@ -47,6 +54,15 @@
               <span class="calendar__day-time-inner">
                 {{timeslot.time | meridiem}}
               </span>
+            </div>
+          </td>
+          <td class="calendar__day-column">
+            <div class="calendar__day-column-inner">
+              <div class="calendar__day-inner-panel">
+                <div class="calendar__day-event" ng-repeat="item in scheduledItems" style="top: {{item.start}}px; height: {{item.duration}}px">
+                  {{item.start}} - {{item.end}} and lasts {{item.duration}} minutes
+                </div>
+              </div>
             </div>
           </td>
         </tr>
