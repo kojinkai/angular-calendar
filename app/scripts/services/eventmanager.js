@@ -10,6 +10,38 @@
 angular.module('schedulerApp')
   .service('eventManager', function(utilities) {
 
+    var eventStart = function(startingOffset, appliedOffset) {
+
+      // reset the object to start at 9am
+      var startPoint = new Date();
+      startPoint.setHours(startingOffset);
+      startPoint.setMinutes(0);
+      startPoint.setSeconds(0);
+
+      // now increment time via passed minutes
+      startPoint.setMinutes(appliedOffset);
+      return startPoint;
+    };
+
+    // partially applied function generator
+    // binding first argument
+    function bindFirstArg(fn, a) {
+      return function(b) {
+        return fn(a, b);
+      };
+    }
+
+    // this.timeGenerator = function(Base, offset) {
+    //   var startsAt = new Date();
+    //   startsAt.setMinutes(offset);
+    //   return startsAt;
+    // };
+
+    /**
+     * @param {Number} takes a number specifying the minutes elapsed since start
+     */
+    var getTime = bindFirstArg(eventStart, 9);
+
     this.eventRegistry = [];
 
     this.createSlots = function(config) {
@@ -19,7 +51,7 @@ angular.module('schedulerApp')
         i = 0;
       for (i; i < config.dayLength; i++) {
 
-        slots.push({time: config.dayStart + i});
+        slots.push({time: config.dayBase + i});
 
         this.eventRegistry.push({
           bookings: []
@@ -33,12 +65,20 @@ angular.module('schedulerApp')
 
       var _this = this;
 
-      utilities.colorTrace('creating event: ', 'green');
+      utilities.colorTrace('creating event... ', 'green');
+
+      // Get start time
+      event.startTime = moment(getTime(event.start)).format('h:mma');
+
+      window.someTime = getTime(event.start);
+
+      // get end time
+      event.endTime = moment(getTime(event.end)).format('h:mma');
 
       // Add a field to the object detailing which slots it touches
       event.affectedSlots = utilities.getAffectedSlots(event.start, event.end);
 
-      // make a calc layout call to seeif it needs a left offset
+      // make a calc layout call to see if it needs a left offset
       event.offset = this.calcOffset(event);
 
       // apply the event's duration

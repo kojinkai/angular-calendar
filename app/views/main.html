@@ -37,7 +37,7 @@
             <div class="calendar__day-inner-panel">
               <div class="calendar__day-event" ng-repeat="item in scheduledItems" style="top: {{item.start}}px; left: {{item.offsetLeft}}; width: {{item.width}}; height: {{item.height}}">
                 <h4>{{item.name}}</h4>
-                <p>{{item.start}} - {{item.end}}<p>
+                <p>{{item.startTime}} - {{item.endTime}}<p>
                 <p>{{item.duration}} minutes</p>
               </div>
             </div>

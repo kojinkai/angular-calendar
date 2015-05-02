@@ -11,7 +11,7 @@ angular.module('schedulerApp')
   .service('dayConfig', function() {
     this.defs = {
       dayLength: 9,
-      dayStart: 9
+      dayBase: 9
     };
 
   });
