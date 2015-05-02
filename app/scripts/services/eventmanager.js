@@ -8,52 +8,7 @@
  * Service in the schedulerApp.
  */
 angular.module('schedulerApp')
-  .service('eventManager', function() {
-
-    // return an hour of the calendar
-    var convertToSlot = function(num) {
-      return Math.ceil(num / 60);
-    };
-
-    // return an array of slots that the
-    // event touches
-    var getAffectedSlots = function(start, end) {
-      var affectedSlots = [];
-      start = convertToSlot(start);
-      end = convertToSlot(end);
-
-      for (start; start <= end; start++) {
-        affectedSlots.push(start);
-      }
-
-      return affectedSlots;
-    };
-
-    this.defs = {
-      dayLength: 9,
-      dayStart: 9
-    };
-
-
-    /**
-     * @param {Array} target array containing objects
-     * @param {Array} indices of above array containing values
-     * @param {String} keys in objects containing numbers on a given object
-     */
-    this.getLongestFromSlots = function(arr, targets, key) {
-      // accepts an array to iterate,
-      // array indices to target,
-      // object key to lookup inside those indices
-
-      var highestValue = 0;
-      targets.forEach(function(index) {
-        if (arr[index][key].length > highestValue) {
-          highestValue = arr[index][key].length;
-        }
-      });
-
-      return highestValue;
-    };
+  .service('eventManager', function(utilities) {
 
     this.eventRegistry = [];
 
@@ -67,12 +22,10 @@ angular.module('schedulerApp')
         slots.push({time: config.dayStart + i});
 
         this.eventRegistry.push({
-          slotId: i + 1,
           bookings: []
         });
       }
 
-      console.log('event registry before: ', this.eventRegistry);
       return slots;
     };
 
@@ -81,39 +34,73 @@ angular.module('schedulerApp')
       var _this = this;
 
       // Add a field to the object detailing which slots it touches
-      event.affectedSlots = getAffectedSlots(event.start, event.end);
+      event.affectedSlots = utilities.getAffectedSlots(event.start, event.end);
+
+      // make a calc layout call to seeif it needs a left offset
+      event.offset = this.calcOffset(event);
+
+      // apply the event's duration
+      event.duration = event.end - event.start;
+
+      // apply the event's height
+      event.height = event.duration + 'px';
+
+      // apply the event's offsetTop
+      event.offsetTop = event.start + 'px';
 
       // loop over the slots each object touches and push the event to that slot's bookings array
       event.affectedSlots.forEach(function(index) {
-        _this.eventRegistry[index - 1].bookings.push(event);
+        _this.eventRegistry[index].bookings.push(event);
       });
-
     };
 
     this.removeEvent = function() {
+      // @TODO add a remove event method
       console.log('removing event');
     };
-    //
-    // this.getScheduleConflicts = function(slot) {
-    //   var slotLookupKey = convertToSlot(slot);
-    //   return this.eventRegistry[slotLookupKey].bookings.length;
-    // };
 
-    this.reCalcLayout = function(events) {
+    /**
+     * @param {Object} an event object from which we pull the slots it touches
+     * and use them to query the eventRegistry object to see if any given slot it touches
+     * has a booking and if so return an offset number based upon the number of event scheduled
+     * in the slot with the maximum number of bookings
+     */
+    this.calcOffset = function(event) {
       var _this = this,
-        recalculatedEvents = [];
+        affectedSlotsLengthValues = [];
 
-      // iterate each slot..
+      event.affectedSlots.forEach(function(index) {
+        affectedSlotsLengthValues.push(_this.eventRegistry[index].bookings.length);
+      });
+
+      return utilities.getBiggestNumber(affectedSlotsLengthValues);
+
+    };
+
+    /**
+     * @param {Object} an event object from which we pull the slots it touches
+     * and use them to query the eventRegistry object to see if any given slot it touches
+     * has a booking and if so return an offset number based upon the number of event scheduled
+     * in the slot with the maximum number of bookings
+     */
+    this.calcLayout = function(events) {
+      var _this = this,
+        eventLayouts = [];
+
+      // // iterate each slot..
       events.forEach(function(event) {
 
         // iterate each slot's bookings - object,indices, key.
         // Of all of the slots that this event touches, return the maximum
         // number of events that a given slot that this objects touches contains
-        event.widthFactor = _this.getLongestFromSlots(_this.eventRegistry, event.affectedSlots, 'bookings');
-        recalculatedEvents.push(event);
+        event.width = (100 / utilities.getLongestFromSlots(_this.eventRegistry, event.affectedSlots, 'bookings')) + '%';
+        event.overlaps = _this.calcOffset(event);
+        event.offsetLeft = (100 / event.overlaps) * event.offset + '%';
+        eventLayouts.push(event);
 
       });
 
-      return recalculatedEvents;
+      return eventLayouts;
+
     };
   });

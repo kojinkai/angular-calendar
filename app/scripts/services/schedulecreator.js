@@ -17,16 +17,13 @@ angular.module('schedulerApp')
       this.end = config.end;
       this.name = config.name || 'New Event';
       this.offsetTop = config.start;
-      this.horizontalSpan = null;
+      this.offsetLeft = null;
+      this.width = null;
+      this.height = null;
     };
 
     scheduledEvent.prototype.getDuration = function() {
       this.duration = this.end - this.start;
-      return this;
-    };
-
-    scheduledEvent.prototype.getLayout = function(overlaps) {
-      this.horizontalSpan = overlaps;
       return this;
     };
 

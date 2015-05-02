@@ -20,19 +20,24 @@ angular.module('schedulerApp')
       schedule.forEach(function(event) {
 
         // create new booking object and add it to the schedule
-        var schedule = new Schedule(event).getDuration();
+        var schedule = new Schedule(event);
 
         // add the event to the registry
+        // @TODO make this into a promise, rather than calling two concurrent methods
         $scope.eventManager.addEvent(schedule);
+
         $scope.scheduledItems.push(schedule);
 
       });
 
       // plot the layouts
-      $scope.scheduledItems = $scope.eventManager.reCalcLayout($scope.scheduledItems);
+      $scope.scheduledItems = $scope.eventManager.calcLayout($scope.scheduledItems);
 
       // re-digest the UI
       $scope.$digest();
+
+      // console.log('scheduled items: ', $scope.scheduledItems);
+      console.log('event registry: ', $scope.eventManager.eventRegistry);
     };
 
   });
