@@ -1,0 +1,16 @@
+.navbar {
+  background-color: transparent;
+  border: 0;
+  margin-bottom: 0;
+}
+
+.navbar-nav {
+  margin-top: 0;
+}
+
+.navbar-header {
+  border-bottom: 2px solid $color-border-grey;
+  @include widebreak-up {
+    border: 0;
+  }
+}

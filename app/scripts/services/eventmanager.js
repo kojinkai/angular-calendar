@@ -33,6 +33,8 @@ angular.module('schedulerApp')
 
       var _this = this;
 
+      utilities.colorTrace('creating event: ', 'green');
+
       // Add a field to the object detailing which slots it touches
       event.affectedSlots = utilities.getAffectedSlots(event.start, event.end);
 

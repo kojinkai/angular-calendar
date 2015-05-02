@@ -36,8 +36,6 @@ angular.module('schedulerApp')
       // re-digest the UI
       $scope.$digest();
 
-      // console.log('scheduled items: ', $scope.scheduledItems);
-      console.log('event registry: ', $scope.eventManager.eventRegistry);
     };
 
   });
